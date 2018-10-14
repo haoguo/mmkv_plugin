@@ -2,7 +2,7 @@
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
 Pod::Spec.new do |s|
-  s.name             = 'mmkv'
+  s.name             = 'mmkv_plugin'
   s.version          = '0.0.1'
   s.summary          = 'Tencent MMKV Flutter wrapper'
   s.description      = <<-DESC
@@ -15,6 +15,7 @@ Tencent MMKV Flutter wrapper
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
+  s.dependency 'MMKV'
   
   s.ios.deployment_target = '8.0'
 end

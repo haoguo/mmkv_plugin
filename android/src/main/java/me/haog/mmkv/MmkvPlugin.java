@@ -40,69 +40,69 @@ public final class MmkvPlugin implements MethodCallHandler {
     if ("putBoolean".equals(call.method)) {
       instances
           .get(call.argument("id"))
-          .encode(call.argument("key"), call.<Boolean>argument("value"));
+          .encode(call.<String>argument("key"), call.<Boolean>argument("value"));
     } else if ("putInt".equals(call.method)) {
       instances
           .get(call.argument("id"))
-          .encode(call.argument("key"), call.<Integer>argument("value"));
+          .encode(call.<String>argument("key"), call.<Integer>argument("value"));
     } else if ("putLong".equals(call.method)) {
       instances
           .get(call.argument("id"))
-          .encode(call.argument("key"), call.<Long>argument("value"));
+          .encode(call.<String>argument("key"), call.<Long>argument("value"));
     } else if ("putString".equals(call.method)) {
       instances
           .get(call.argument("id"))
-          .encode(call.argument("key"), call.<String>argument("value"));
-    } else if ("putFloat".equals(call.method)) {
+          .encode(call.<String>argument("key"), call.<String>argument("value"));
+    } else if ("putDouble".equals(call.method)) {
       instances
           .get(call.argument("id"))
-          .encode(call.argument("key"), call.<Float>argument("value"));
+          .encode(call.<String>argument("key"), call.<Double>argument("value"));
     } else if ("putBytes".equals(call.method)) {
       instances
           .get(call.argument("id"))
-          .encode(call.argument("key"), call.<byte[]>argument("value"));
+          .encode(call.<String>argument("key"), call.<byte[]>argument("value"));
     } else if ("getBoolean".equals(call.method)) {
       boolean value = instances
           .get(call.argument("id"))
           .decodeBool(
-              call.argument("key"),
-              call.hasArgument("defaultValue") ? call.argument("defaultValue") : false);
+              call.<String>argument("key"),
+              call.hasArgument("defaultValue") ? call.<Boolean>argument("defaultValue") : false);
     } else if ("getInt".equals(call.method)) {
       int value = instances
           .get(call.argument("id"))
           .decodeInt(
-              call.argument("key"),
-              call.hasArgument("defaultValue") ? call.argument("defaultValue") : 0);
+              call.<String>argument("key"),
+              call.hasArgument("defaultValue") ? call.<Integer>argument("defaultValue") : 0);
     } else if ("getLong".equals(call.method)) {
       long value = instances
           .get(call.argument("id"))
           .decodeLong(
-              call.argument("key"),
-              call.hasArgument("defaultValue") ? call.argument("defaultValue") : 0L);
+              call.<String>argument("key"),
+              call.hasArgument("defaultValue") ? call.<Long>argument("defaultValue") : 0L);
     } else if ("getString".equals(call.method)) {
       String value = instances
           .get(call.argument("id"))
           .decodeString(
-              call.argument("key"),
-              call.hasArgument("defaultValue") ? call.argument("defaultValue") : null);
-    } else if ("getFloat".equals(call.method)) {
-      float value = instances
+              call.<String>argument("key"),
+              call.hasArgument("defaultValue") ? call.<String>argument("defaultValue") : null);
+    } else if ("getDouble".equals(call.method)) {
+      double value = instances
           .get(call.argument("id"))
-          .decodeFloat(
-              call.argument("key"),
-              call.hasArgument("defaultValue") ? call.argument("defaultValue") : 0.0F);
+          .decodeDouble(
+              call.<String>argument("key"),
+              call.hasArgument("defaultValue") ? call.<Double>argument("defaultValue") : 0.0D);
     } else if ("getBytes".equals(call.method)) {
       byte[] value = instances
           .get(call.argument("id"))
-          .decodeBytes(call.argument("key"));
+          .decodeBytes(call.<String>argument("key"));
     } else if ("containsKey".equals(call.method)) {
       instances
           .get(call.argument("id"))
-          .containsKey(call.argument("key"));
+          .containsKey(call.<String>argument("key"));
     } else if ("remove".equals(call.method)) {
       instances
           .get(call.argument("id"))
-          .removeValueForKey(call.argument("key"));
+          .removeValueForKey(call.<String>argument("key"));
     } else if ("clear".equals(call.method)) {
       instances
           .get(call.argument("id"))
@@ -111,6 +111,10 @@ public final class MmkvPlugin implements MethodCallHandler {
       instances
           .get(call.argument("id"))
           .allKeys();
+    } else if ("count".equals(call.method)) {
+      instances
+          .get(call.argument("id"))
+          .count();
     } else {
       result.notImplemented();
     }

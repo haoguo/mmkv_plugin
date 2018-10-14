@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "GeneratedPluginRegistrant.h"
+#include <MMKV/MMKV.h>
 
 @implementation AppDelegate
 
