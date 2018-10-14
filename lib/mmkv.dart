@@ -13,13 +13,19 @@ class Mmkv {
 
   static Future<Mmkv> defaultInstance() {
     Completer<Mmkv> completer = Completer();
-    _channel.invokeMethod('default').then((value) => completer.complete(Mmkv._(true, null))).catchError((error) => completer.completeError(error));
+    _channel
+        .invokeMethod('default')
+        .then((value) => completer.complete(Mmkv._(true, null)))
+        .catchError((error) => completer.completeError(error));
     return completer.future;
   }
 
   static Future<Mmkv> withId(String id) {
     Completer<Mmkv> completer = Completer();
-    _channel.invokeMethod('withId', {'id': id}).then((value) => completer.complete(Mmkv._(false, id))).catchError((error) => completer.completeError(error));
+    _channel
+        .invokeMethod('withId', {'id': id})
+        .then((value) => completer.complete(Mmkv._(false, id)))
+        .catchError((error) => completer.completeError(error));
     return completer.future;
   }
 
@@ -43,15 +49,20 @@ class Mmkv {
     return _channel.invokeMethod(method, params);
   }
 
-  void putBoolean(String key, bool value) async => await _invoke('putBoolean', {'key': key, 'value': value});
+  void putBoolean(String key, bool value) async =>
+      await _invoke('putBoolean', {'key': key, 'value': value});
 
-  void putInt(String key, int value) async => await _invoke('putLong', {'key': key, 'value': value});
+  void putInt(String key, int value) async =>
+      await _invoke('putLong', {'key': key, 'value': value});
 
-  void putString(String key, String value) async => await _invoke('putString', {'key': key, 'value': value});
+  void putString(String key, String value) async =>
+      await _invoke('putString', {'key': key, 'value': value});
 
-  void putBytes(String key, Uint8List value) async => await _invoke('putBytes', {'key': key, 'value': value});
+  void putBytes(String key, Uint8List value) async =>
+      await _invoke('putBytes', {'key': key, 'value': value});
 
-  void putDouble(String key, double value) async => await _invoke('putDouble', {'key': key, 'value': value});
+  void putDouble(String key, double value) async =>
+      await _invoke('putDouble', {'key': key, 'value': value});
 
   Future<bool> getBoolean(String key) => _invoke('getBoolean', {'key': key});
 
