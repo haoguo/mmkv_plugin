@@ -38,7 +38,7 @@ class Mmkv {
     return completer.future;
   }
 
-  Future _invoke(String method, Map<String, dynamic> arguments) {
+  Future<T> _invoke<T>(String method, Map<String, dynamic> arguments) {
     Map<String, dynamic> params = {};
     if (this.isDefault) {
       params['default'] = true;
@@ -46,7 +46,11 @@ class Mmkv {
       params['id'] = this.id;
     }
     params.addAll(arguments);
-    return _channel.invokeMethod(method, params);
+    Completer<T> completer = Completer();
+    _channel.invokeMethod(method, params)
+        .then((value) => completer.complete(value as T))
+        .catchError((error) => completer.completeError(error));
+    return completer.future;
   }
 
   void putBoolean(String key, bool value) async =>
@@ -66,7 +70,7 @@ class Mmkv {
 
   Future<bool> getBoolean(String key) => _invoke('getBoolean', {'key': key});
 
-  Future<int> getInt(String key) => _invoke('getLong', {'key': key});
+  Future<int> getInt(String key) => _invoke<int>('getLong', {'key': key});
 
   Future<String> getString(String key) => _invoke('getString', {'key': key});
 

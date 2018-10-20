@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mmkv/mmkv.dart';
+import 'package:mmkv_plugin/mmkv.dart';
 
 void main() => runApp(new MyApp());
 
@@ -17,12 +17,12 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     Mmkv.defaultInstance().then((inst) {
       mmkv = inst;
-      mmkv.putInt('testint', 999);
+      mmkv.putString('testint', 'hello world');
     });
   }
 
   void onPressed() {
-    mmkv.getInt('testint').then((i) => print(i));
+    mmkv.getString('testint').then((i) => print(i));
   }
 
   @override

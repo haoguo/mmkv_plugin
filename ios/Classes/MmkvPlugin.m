@@ -1,16 +1,16 @@
 #import "MmkvPlugin.h"
 
-@interface MmkvPlugin ()
+@interface FLTMmkvPlugin ()
 @property(nonatomic) MMKV* defaultInstance;
 @property(nonatomic) NSMutableDictionary<NSString*, MMKV*>* instances;
 @end
 
-@implementation MmkvPlugin
+@implementation FLTMmkvPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
       methodChannelWithName:@"mmkv"
             binaryMessenger:[registrar messenger]];
-  MmkvPlugin* instance = [[MmkvPlugin alloc] init];
+  FLTMmkvPlugin* instance = [[FLTMmkvPlugin alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];
 }
 
@@ -36,12 +36,7 @@
     if ([@"putBoolean" isEqualToString:call.method]) {
       [inst setBool:call.arguments[@"value"] forKey:call.arguments[@"key"]];
       result(NULL);
-    } else if ([@"putInt" isEqualToString:call.method]) {
-      [inst setInt32:[(NSNumber*)call.arguments[@"value"] intValue] forKey:call.arguments[@"key"]];
-      result(NULL);
     } else if ([@"putLong" isEqualToString:call.method]) {
-      long longValue;
-      NSNumber* value = (NSNumber*)call.arguments[@"value"];
       [inst setInt64:[(NSNumber*)call.arguments[@"value"] longValue] forKey:call.arguments[@"key"]];
       result(NULL);
     } else if ([@"putString" isEqualToString:call.method]) {
@@ -49,20 +44,25 @@
       result(NULL);
     } else if ([@"putDouble" isEqualToString:call.method]) {
       [inst setDouble:[(NSNumber*)call.arguments[@"value"] doubleValue] forKey:call.arguments[@"key"]];
+      result(NULL);
     } else if ([@"putBytes" isEqualToString:call.method]) {
       [inst setObject:call.arguments[@"value"] forKey:call.arguments[@"key"]];
+      result(NULL);
     } else if ([@"getBoolean" isEqualToString:call.method]) {
-      [inst getBoolForKey:call.arguments[@"key"] defaultValue:call.arguments[@"defaultValue"]];
-    } else if ([@"getInt" isEqualToString:call.method]) {
-      [inst getInt32ForKey:call.arguments[@"key"] defaultValue:[(NSNumber*)call.arguments[@"defaultValue"] intValue]];
+      bool value = [inst getBoolForKey:call.arguments[@"key"] defaultValue:call.arguments[@"defaultValue"]];
+      result([NSNumber numberWithBool:value]);
     } else if ([@"getLong" isEqualToString:call.method]) {
-      [inst getInt64ForKey:call.arguments[@"key"] defaultValue:[(NSNumber*)call.arguments[@"defaultValue"] longValue]];
+      long value = [inst getInt64ForKey:call.arguments[@"key"] defaultValue:[(NSNumber*)call.arguments[@"defaultValue"] longValue]];
+      result([NSNumber numberWithLong:value]);
     } else if ([@"getString" isEqualToString:call.method]) {
-      [inst getObjectOfClass:NSString.class forKey:call.arguments[@"key"]];
+      NSString* value = [inst getObjectOfClass:NSString.class forKey:call.arguments[@"key"]];
+      result(value);
     } else if ([@"getDouble" isEqualToString:call.method]) {
-      [inst getDoubleForKey:call.arguments[@"key"] defaultValue:[(NSNumber*)call.arguments[@"defaultValue"] doubleValue]];
+      double value = [inst getDoubleForKey:call.arguments[@"key"] defaultValue:[(NSNumber*)call.arguments[@"defaultValue"] doubleValue]];
+      result([NSNumber numberWithDouble:value]);
     } else if ([@"getBytes" isEqualToString:call.method]) {
-      [inst getObjectOfClass:NSData.class forKey:call.arguments[@"key"]];
+      NSData* value = [inst getObjectOfClass:NSData.class forKey:call.arguments[@"key"]];
+      result([FlutterStandardTypedData typedDataWithBytes:value]);
     } else if ([@"containsKey" isEqualToString:call.method]) {
       result([NSNumber numberWithBool:[inst containsKey:call.arguments[@"key"]]]);
     } else if ([@"remove" isEqualToString:call.method]) {
@@ -79,6 +79,8 @@
       result(keys);
     } else if ([@"count" isEqualToString:call.method]) {
       result([NSNumber numberWithLong:[inst count]]);
+    } else {
+      result(FlutterMethodNotImplemented);
     }
   }
 }

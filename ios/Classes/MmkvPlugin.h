@@ -1,5 +1,5 @@
 #import <Flutter/Flutter.h>
 #import <MMKV/MMKV.h>
 
-@interface MmkvPlugin : NSObject<FlutterPlugin>
+@interface FLTMmkvPlugin : NSObject<FlutterPlugin>
 @end
