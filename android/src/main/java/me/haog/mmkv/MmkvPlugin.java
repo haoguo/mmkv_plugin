@@ -5,7 +5,10 @@ import android.util.Base64;
 
 import com.tencent.mmkv.MMKV;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.flutter.plugin.common.MethodCall;
@@ -46,11 +49,13 @@ public final class MmkvPlugin implements MethodCallHandler {
     } else if ("withId".equals(call.method)) {
       String id = call.argument("id");
       instances.put(id, MMKV.mmkvWithID(id));
+      result.success(null);
     } else if ("withCryptKey".equals(call.method)) {
       String id = call.argument("id");
       byte[] cryptKey = call.argument("cryptKey");
       String cryptKeySz = Base64.encodeToString(cryptKey, Base64.DEFAULT);
       instances.put(id, MMKV.mmkvWithID(id, MMKV.SINGLE_PROCESS_MODE, cryptKeySz));
+      result.success(null);
     } else {
       MMKV inst;
       if (call.argument("default")) {
@@ -60,48 +65,63 @@ public final class MmkvPlugin implements MethodCallHandler {
       }
       if ("putBoolean".equals(call.method)) {
         inst.encode(call.<String>argument("key"), call.<Boolean>argument("value"));
-      } else if ("putInt".equals(call.method)) {
-        inst.encode(call.<String>argument("key"), call.<Integer>argument("value"));
+        result.success(null);
       } else if ("putLong".equals(call.method)) {
-        inst.encode(call.<String>argument("key"), call.<Long>argument("value"));
+        Object value = call.argument("value");
+        Long longValue;
+        if (value instanceof Integer) {
+          longValue = ((Integer) value).longValue();
+        } else {
+          longValue = (Long) value;
+        }
+        inst.encode(call.<String>argument("key"), longValue);
+        result.success(null);
       } else if ("putString".equals(call.method)) {
         inst.encode(call.<String>argument("key"), call.<String>argument("value"));
+        result.success(null);
       } else if ("putDouble".equals(call.method)) {
         inst.encode(call.<String>argument("key"), call.<Double>argument("value"));
+        result.success(null);
       } else if ("putBytes".equals(call.method)) {
         inst.encode(call.<String>argument("key"), call.<byte[]>argument("value"));
+        result.success(null);
       } else if ("getBoolean".equals(call.method)) {
         boolean value = inst.decodeBool(
             call.<String>argument("key"),
             call.hasArgument("defaultValue") ? call.<Boolean>argument("defaultValue") : false);
-      } else if ("getInt".equals(call.method)) {
-        int value = inst.decodeInt(
-            call.<String>argument("key"),
-            call.hasArgument("defaultValue") ? call.<Integer>argument("defaultValue") : 0);
+        result.success(value);
       } else if ("getLong".equals(call.method)) {
         long value = inst.decodeLong(
             call.<String>argument("key"),
             call.hasArgument("defaultValue") ? call.<Long>argument("defaultValue") : 0L);
+        result.success(value);
       } else if ("getString".equals(call.method)) {
         String value = inst.decodeString(
             call.<String>argument("key"),
             call.hasArgument("defaultValue") ? call.<String>argument("defaultValue") : null);
+        result.success(value);
       } else if ("getDouble".equals(call.method)) {
         double value = inst.decodeDouble(
             call.<String>argument("key"),
             call.hasArgument("defaultValue") ? call.<Double>argument("defaultValue") : 0.0D);
+        result.success(value);
       } else if ("getBytes".equals(call.method)) {
         byte[] value = inst.decodeBytes(call.<String>argument("key"));
+        result.success(value);
       } else if ("containsKey".equals(call.method)) {
-        inst.containsKey(call.<String>argument("key"));
+        result.success(inst.containsKey(call.<String>argument("key")));
       } else if ("remove".equals(call.method)) {
         inst.removeValueForKey(call.<String>argument("key"));
+        result.success(null);
       } else if ("clear".equals(call.method)) {
         inst.clearAll();
+        result.success(null);
       } else if ("keys".equals(call.method)) {
-        inst.allKeys();
+        String[] keys = inst.allKeys();
+        result.success(Arrays.asList(keys));
       } else if ("count".equals(call.method)) {
-        inst.count();
+        long count = inst.count();
+        result.success(count);
       } else {
         result.notImplemented();
       }

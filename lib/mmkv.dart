@@ -66,7 +66,7 @@ class Mmkv {
 
   Future<bool> getBoolean(String key) => _invoke('getBoolean', {'key': key});
 
-  Future<int> getInt(String key) => _invoke('getInt', {'key': key});
+  Future<int> getInt(String key) => _invoke('getLong', {'key': key});
 
   Future<String> getString(String key) => _invoke('getString', {'key': key});
 

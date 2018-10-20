@@ -22,8 +22,10 @@
     result(NULL);
   } else if ([@"withId" isEqualToString:call.method]) {
     _instances[call.arguments[@"id"]] = [MMKV mmkvWithID:call.arguments[@"id"]];
+    result(NULL);
   } else if ([@"withCryptKey" isEqualToString:call.method]) {
     _instances[call.arguments[@"id"]] = [MMKV mmkvWithID:call.arguments[@"id"] cryptKey:call.arguments[@"cryptKey"]];
+    result(NULL);
   } else {
     MMKV* inst = NULL;
     if ([(NSNumber*)call.arguments[@"default"] boolValue]) {
@@ -33,12 +35,18 @@
     }
     if ([@"putBoolean" isEqualToString:call.method]) {
       [inst setBool:call.arguments[@"value"] forKey:call.arguments[@"key"]];
+      result(NULL);
     } else if ([@"putInt" isEqualToString:call.method]) {
       [inst setInt32:[(NSNumber*)call.arguments[@"value"] intValue] forKey:call.arguments[@"key"]];
+      result(NULL);
     } else if ([@"putLong" isEqualToString:call.method]) {
+      long longValue;
+      NSNumber* value = (NSNumber*)call.arguments[@"value"];
       [inst setInt64:[(NSNumber*)call.arguments[@"value"] longValue] forKey:call.arguments[@"key"]];
+      result(NULL);
     } else if ([@"putString" isEqualToString:call.method]) {
       [inst setObject:call.arguments[@"value"] forKey:call.arguments[@"key"]];
+      result(NULL);
     } else if ([@"putDouble" isEqualToString:call.method]) {
       [inst setDouble:[(NSNumber*)call.arguments[@"value"] doubleValue] forKey:call.arguments[@"key"]];
     } else if ([@"putBytes" isEqualToString:call.method]) {
