@@ -47,25 +47,43 @@ class Mmkv {
     }
     params.addAll(arguments);
     Completer<T> completer = Completer();
-    _channel.invokeMethod(method, params)
+    _channel
+        .invokeMethod(method, params)
         .then((value) => completer.complete(value as T))
         .catchError((error) => completer.completeError(error));
     return completer.future;
   }
 
-  void putBoolean(String key, bool value) async =>
+  Future<void> put(String key, dynamic value) async {
+    switch (value.runtimeType) {
+      case bool:
+        return await this.putBoolean(key, value);
+      case int:
+        return await this.putInt(key, value);
+      case String:
+        return await this.putString(key, value);
+      case Uint8List:
+        return await this.putBytes(key, value);
+      case double:
+        return await this.putDouble(key, value);
+      default:
+        return Future.error('invalid type');
+    }
+  }
+
+  Future<void> putBoolean(String key, bool value) async =>
       await _invoke('putBoolean', {'key': key, 'value': value});
 
-  void putInt(String key, int value) async =>
+  Future<void> putInt(String key, int value) async =>
       await _invoke('putLong', {'key': key, 'value': value});
 
-  void putString(String key, String value) async =>
+  Future<void> putString(String key, String value) async =>
       await _invoke('putString', {'key': key, 'value': value});
 
-  void putBytes(String key, Uint8List value) async =>
+  Future<void> putBytes(String key, Uint8List value) async =>
       await _invoke('putBytes', {'key': key, 'value': value});
 
-  void putDouble(String key, double value) async =>
+  Future<void> putDouble(String key, double value) async =>
       await _invoke('putDouble', {'key': key, 'value': value});
 
   Future<bool> getBoolean(String key) => _invoke('getBoolean', {'key': key});
