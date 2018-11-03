@@ -1,3 +1,10 @@
+## 0.0.8
+
+### Bug Fixes
+
+* change main file name to be mmkv_plugin.dart which follow dart suggestion.
+
+
 ## 0.0.7
 
 ### Features

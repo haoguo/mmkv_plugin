@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mmkv_plugin/mmkv.dart';
+import 'package:mmkv_plugin/mmkv_plugin.dart';
 
 void main() => runApp(new MyApp());
 
