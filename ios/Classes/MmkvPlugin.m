@@ -79,6 +79,10 @@
       result(keys);
     } else if ([@"count" isEqualToString:call.method]) {
       result([NSNumber numberWithLong:[inst count]]);
+    } else if ([@"removeValuesForKeys" isEqualToString:call.method]) {
+      NSArray* keys = call.arguments[@"keys"];
+      [inst removeValuesForKeys:keys];
+      result(NULL);
     } else {
       result(FlutterMethodNotImplemented);
     }

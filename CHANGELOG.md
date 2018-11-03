@@ -1,3 +1,10 @@
+## 0.0.7
+
+### Features
+
+* add removeKeys
+
+
 ## 0.0.6
 
 ### Features

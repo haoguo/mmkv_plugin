@@ -1,6 +1,6 @@
 name: mmkv_plugin
 description: Tencent MMKV Flutter wrapper
-version: 0.0.6
+version: 0.0.7
 author: haoguo <bard.guo@gmail.com>
 homepage: https://github.com/haoguo/mmkv
 

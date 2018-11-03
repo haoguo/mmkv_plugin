@@ -105,4 +105,6 @@ class Mmkv {
   Future<List<String>> keys() => _invoke('keys', {});
 
   Future<int> count() => _invoke('count', {});
+
+  Future<void> removeValuesForKeys(List<String> keys) => _invoke('removeValuesForKeys', {'keys': keys});
 }
