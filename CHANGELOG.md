@@ -1,3 +1,10 @@
+## 0.0.11
+
+### Bug Fixes
+
+* fix grammar issue
+
+
 ## 0.0.10
 
 ### Bug Fixes
