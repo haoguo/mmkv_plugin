@@ -1,3 +1,10 @@
+## 0.0.9
+
+### Bug Fixes
+
+* fix a crush issue under android
+
+
 ## 0.0.8
 
 ### Bug Fixes

@@ -58,7 +58,7 @@ public final class MmkvPlugin implements MethodCallHandler {
       result.success(null);
     } else {
       MMKV inst;
-      if (call.argument("default")) {
+      if (call.hasArgument("default")) {
         inst = defaultInstance;
       } else {
         inst = instances.get(call.argument("id"));
