@@ -102,9 +102,16 @@ class Mmkv {
 
   Future<void> clear() => _invoke('clear', {});
 
-  Future<List<String>> keys() => _invoke('keys', {});
+  Future<List<String>> keys() {
+    Completer<List<String>> completer = Completer();
+    _invoke<List<dynamic>>('keys', {})
+        .then((keys) => completer.complete(keys.whereType<String>().toList()))
+        .catchError((error) => completer.completeError(error));
+    return completer.future;
+  }
 
   Future<int> count() => _invoke('count', {});
 
-  Future<void> removeValuesForKeys(List<String> keys) => _invoke('removeValuesForKeys', {'keys': keys});
+  Future<void> removeValuesForKeys(List<String> keys) =>
+      _invoke('removeValuesForKeys', {'keys': keys});
 }

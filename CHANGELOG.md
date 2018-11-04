@@ -1,3 +1,10 @@
+## 0.0.12
+
+### Bug Fixes
+
+* fix a type casting issue
+
+
 ## 0.0.11
 
 ### Bug Fixes
