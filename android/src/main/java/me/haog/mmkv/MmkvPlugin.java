@@ -118,6 +118,7 @@ public final class MmkvPlugin implements MethodCallHandler {
         result.success(null);
       } else if ("keys".equals(call.method)) {
         String[] keys = inst.allKeys();
+        if (keys == null) keys = new String[];
         result.success(Arrays.asList(keys));
       } else if ("count".equals(call.method)) {
         long count = inst.count();

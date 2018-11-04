@@ -1,3 +1,10 @@
+## 0.0.10
+
+### Bug Fixes
+
+* fix a NPE under android
+
+
 ## 0.0.9
 
 ### Bug Fixes
